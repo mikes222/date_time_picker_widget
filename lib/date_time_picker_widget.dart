@@ -1,4 +1,6 @@
 library date_time_picker_widget;
 
-export 'package:date_time_picker_widget/src/date_time_picker_type.dart';
-export 'package:date_time_picker_widget/src/date_time_picker_view.dart';
+export 'src/date_picker.dart';
+export 'src/date_time_picker.dart';
+export 'src/model/date_time_picker_model.dart';
+export 'src/time_picker.dart';

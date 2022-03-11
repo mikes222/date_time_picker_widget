@@ -111,34 +111,25 @@ class _MyHomePageState extends State<MyHomePage> {
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 8),
-        Text(
-          'Date: $_d1  Time: $_t1',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-        const SizedBox(height: 16),
         DateTimePicker(
-          initialSelectedDate: dt,
-          startDate: dt.subtract(const Duration(days: 1)),
-          endDate: dt.add(const Duration(days: 60)),
-          startTime: DateTime(dt.year, dt.month, dt.day, 6),
-          endTime: DateTime(dt.year, dt.month, dt.day, 18),
-          timeInterval: const Duration(minutes: 15),
-          datePickerTitle: 'Pick your preferred date',
-          timePickerTitle: 'Pick your preferred time',
-          timeOutOfRangeError: 'Sorry shop is closed now',
-          is24h: false,
-          numberOfWeeksToDisplay: 4,
-          onDateChanged: (date) {
-            setState(() {
-              _d1 = DateFormat('dd MMM, yyyy').format(date);
-            });
-          },
-          onTimeChanged: (time) {
-            setState(() {
-              _t1 = DateFormat('hh:mm:ss aa').format(time);
-            });
-          },
+          model: DateTimePickerModel(
+            initialTimestamp: dt.millisecondsSinceEpoch,
+            // startDate: dt.subtract(const Duration(days: 1)),
+            // endDate: dt.add(const Duration(days: 60)),
+            // startTime: DateTime(dt.year, dt.month, dt.day, 6),
+            // endTime: DateTime(dt.year, dt.month, dt.day, 18),
+            timeInterval: 15 * 60 * 1000,
+            //const Duration(minutes: 15),
+            // datePickerTitle: 'Pick your preferred date',
+            // timePickerTitle: 'Pick your preferred time',
+            // timeOutOfRangeError: 'Sorry shop is closed now',
+            // is24h: false,
+            numberOfWeeksToDisplay: 4,
+            minTime: 4 * 60 * 60 * 1000,
+            maxTime: 18 * 60 * 60 * 1000,
+            minTimestamp: dt.millisecondsSinceEpoch - 24 * 60 * 60 * 1000,
+            maxTimestamp: dt.millisecondsSinceEpoch + 14 * 24 * 60 * 60 * 1000,
+          ),
         )
       ],
     );
@@ -154,19 +145,20 @@ class _MyHomePageState extends State<MyHomePage> {
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 8),
-        Text(
-          'Date: $_d2',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-        const SizedBox(height: 16),
-        DateTimePicker(
-          type: DateTimePickerType.Date,
-          onDateChanged: (date) {
-            setState(() {
-              _d2 = DateFormat('dd MMM, yyyy').format(date);
-            });
-          },
+        DatePicker(
+          model: DateTimePickerModel(
+            numberOfWeeksToDisplay: 1,
+            onDateTimeChanged: (int timestamp) {
+              setState(() {
+                _d2 = DateFormat('dd MMM, yyyy').format(
+                    DateTime.fromMillisecondsSinceEpoch(timestamp,
+                        isUtc: true));
+                _t2 = DateFormat('hh:mm:ss aa').format(
+                    DateTime.fromMillisecondsSinceEpoch(timestamp,
+                        isUtc: true));
+              });
+            },
+          ),
         )
       ],
     );
@@ -182,20 +174,20 @@ class _MyHomePageState extends State<MyHomePage> {
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 8),
-        Text(
-          'Time: $_t2',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-        const SizedBox(height: 16),
-        DateTimePicker(
-          type: DateTimePickerType.Time,
-          timeInterval: const Duration(minutes: 30),
-          onTimeChanged: (time) {
-            setState(() {
-              _t2 = DateFormat('hh:mm:ss aa').format(time);
-            });
-          },
+        TimePicker(
+          model: DateTimePickerModel(
+            timeInterval: 30 * 60 * 1000,
+            onDateTimeChanged: (int timestamp) {
+              setState(() {
+                _d2 = DateFormat('dd MMM, yyyy').format(
+                    DateTime.fromMillisecondsSinceEpoch(timestamp,
+                        isUtc: true));
+                _t2 = DateFormat('hh:mm:ss aa').format(
+                    DateTime.fromMillisecondsSinceEpoch(timestamp,
+                        isUtc: true));
+              });
+            },
+          ),
         )
       ],
     );
