@@ -11,8 +11,8 @@ class TimePickerView extends StatelessWidget {
 
   final ItemScrollController _timeScrollController = ItemScrollController();
 
-  final ItemPositionsListener _timePositionsListener =
-      ItemPositionsListener.create();
+  // final ItemPositionsListener _timePositionsListener =
+  //     ItemPositionsListener.create();
 
   TimePickerView({
     Key? key,
@@ -32,6 +32,7 @@ class TimePickerView extends StatelessWidget {
           SelectedTimestamp selectedTimestamp = snapshot.data!;
           List<Timeslot> timeslots = selectedTimestamp
               .day.timeslots; // controller.getTimeslotsForSelectedDay();
+
           int idx = 0;
           for (Timeslot timeslot in timeslots) {
             if (controller.isSelectedTime(timeslot.date)) {
@@ -42,11 +43,8 @@ class TimePickerView extends StatelessWidget {
           if (idx < timeslots.length) {
             if (idx < 3) idx = 0;
             if (idx >= 3) idx -= 2;
-            Future.delayed(const Duration(milliseconds: 500), () {
-              _timeScrollController.scrollTo(
-                  index: idx, duration: const Duration(milliseconds: 500));
-            });
           }
+
           return Container(
             height: 45,
             alignment: Alignment.center,
@@ -57,6 +55,12 @@ class TimePickerView extends StatelessWidget {
               itemCount: timeslots.length,
               itemBuilder: (context, index) {
                 Timeslot timeslot = timeslots[index];
+                if (idx >= 0) {
+                  // still not working
+                  // _timeScrollController.scrollTo(
+                  //     index: idx, duration: const Duration(milliseconds: 500));
+                  idx = -1;
+                }
                 return _buildItem(timeslot, context);
               },
             ),

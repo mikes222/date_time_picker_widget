@@ -129,6 +129,13 @@ class _MyHomePageState extends State<MyHomePage> {
             maxTime: 18 * 60 * 60 * 1000,
             minTimestamp: dt.millisecondsSinceEpoch - 24 * 60 * 60 * 1000,
             maxTimestamp: dt.millisecondsSinceEpoch + 14 * 24 * 60 * 60 * 1000,
+            onDateTimeChanged: (int timestamp) {
+              _d2 = DateFormat('dd MMM, yyyy').format(
+                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
+              _t2 = DateFormat('hh:mm:ss aa').format(
+                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
+              print("Date: $_d2 Time: $_t2");
+            },
           ),
         )
       ],
@@ -148,15 +155,13 @@ class _MyHomePageState extends State<MyHomePage> {
         DatePicker(
           model: DateTimePickerModel(
             numberOfWeeksToDisplay: 1,
+            firstDayOfWeek: DateTime.monday,
             onDateTimeChanged: (int timestamp) {
-              setState(() {
-                _d2 = DateFormat('dd MMM, yyyy').format(
-                    DateTime.fromMillisecondsSinceEpoch(timestamp,
-                        isUtc: true));
-                _t2 = DateFormat('hh:mm:ss aa').format(
-                    DateTime.fromMillisecondsSinceEpoch(timestamp,
-                        isUtc: true));
-              });
+              _d2 = DateFormat('dd MMM, yyyy').format(
+                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
+              _t2 = DateFormat('hh:mm:ss aa').format(
+                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
+              print("Date: $_d2 Time: $_t2");
             },
           ),
         )
@@ -178,14 +183,10 @@ class _MyHomePageState extends State<MyHomePage> {
           model: DateTimePickerModel(
             timeInterval: 30 * 60 * 1000,
             onDateTimeChanged: (int timestamp) {
-              setState(() {
-                _d2 = DateFormat('dd MMM, yyyy').format(
-                    DateTime.fromMillisecondsSinceEpoch(timestamp,
-                        isUtc: true));
-                _t2 = DateFormat('hh:mm:ss aa').format(
-                    DateTime.fromMillisecondsSinceEpoch(timestamp,
-                        isUtc: true));
-              });
+              _d2 = DateFormat('dd MMM, yyyy').format(
+                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
+              _t2 = DateFormat('hh:mm:ss aa').format(
+                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
             },
           ),
         )

@@ -35,7 +35,7 @@ class DayPickerView extends StatelessWidget {
                   },
                   itemCount: controller.maxPages,
                   itemBuilder: (BuildContext context, int page) {
-                    print("displaying page $page");
+                    //print("displaying page $page");
                     return _buildPage(context, page);
                   },
                 ),
