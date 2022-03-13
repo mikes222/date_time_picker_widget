@@ -87,7 +87,7 @@ class _DateTimePickerState extends State {
                 if (snapshot.connectionState == ConnectionState.waiting)
                   return const SizedBox();
                 if (widget.model.onDateTimeChanged != null)
-                  widget.model.onDateTimeChanged!(snapshot.data!.timestamp);
+                  widget.model.onDateTimeChanged!(snapshot.data!.dateTime);
                 return const SizedBox();
               }),
         ],

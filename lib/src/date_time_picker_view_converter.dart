@@ -11,21 +11,15 @@ class DateTimePickerViewConverter {
     DateTime.saturday: 'S',
   };
 
-  String monthYearToView(int timestamp) {
-    final DateTime dateTime =
-        DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true);
+  String monthYearToView(DateTime dateTime) {
     return DateFormat('MMMM yyyy').format(dateTime);
   }
 
-  String dateToView(int timestamp) {
-    final DateTime dateTime =
-        DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true);
+  String dateToView(DateTime dateTime) {
     return DateFormat('dd MMM, yyyy').format(dateTime);
   }
 
-  String timeToView(int timestamp) {
-    final DateTime dateTime =
-        DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true);
+  String timeToView(DateTime dateTime) {
     return DateFormat('HH:mm' /*: 'hh:mm aa'*/).format(dateTime);
   }
 

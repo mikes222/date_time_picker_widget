@@ -11,10 +11,10 @@ import 'testhelper.dart';
 ///
 void main() {
   testWidgets('Shows the timepicker', (WidgetTester tester) async {
-    final int selectedTimestamp =
-        DateTime.utc(2022, 3, 10, 1, 30, 0, 0, 0).millisecondsSinceEpoch;
+    final DateTime selectedDateTime =
+        DateTime.utc(2022, 3, 10, 1, 30, 0, 0, 0);
     final DateTimePickerModel model = DateTimePickerModel(
-        initialTimestamp: selectedTimestamp,
+        initialDateTime: selectedDateTime,
         timeInterval: const Duration(minutes: 15));
     final DateTimePickerController controller =
         DateTimePickerController(model: model);

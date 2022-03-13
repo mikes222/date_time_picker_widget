@@ -11,8 +11,6 @@ import 'package:rxdart/rxdart.dart';
 class DateTimePickerController {
   final DateTimePickerModel model;
 
-  late int selectedTimestamp;
-
   late DateTime selectedDateTime;
 
   late final DateTime _firstDay;
@@ -33,24 +31,31 @@ class DateTimePickerController {
   DateTimePickerController({required this.model}) {
     _selectedInject = BehaviorSubject<SelectedTimestamp>();
     _pageInject = BehaviorSubject<SelectedPage>();
-    selectedTimestamp = model.initialTimestamp;
-    selectedDateTime =
-        DateTime.fromMillisecondsSinceEpoch(selectedTimestamp, isUtc: true);
+    selectedDateTime = model.initialDateTime;
     if (model.minTime != null &&
         model.minTime! >
             (selectedDateTime.millisecond +
                 selectedDateTime.second * 1000 +
                 selectedDateTime.minute * 60 * 1000 +
                 selectedDateTime.hour * 60 * 60 * 1000)) {
-      selectedDateTime = DateTime.utc(
-          selectedDateTime.year,
-          selectedDateTime.month,
-          selectedDateTime.day,
-          (model.minTime! / 60 / 60 / 1000).floor(),
-          ((model.minTime! % (60 * 60 * 1000)) / 60 / 1000).floor(),
-          ((model.minTime! % (60 * 1000)) / 1000).floor(),
-          ((model.minTime! % 1000)).floor());
-      selectedTimestamp = selectedDateTime.millisecondsSinceEpoch;
+      if (model.isUtc)
+        selectedDateTime = DateTime.utc(
+            selectedDateTime.year,
+            selectedDateTime.month,
+            selectedDateTime.day,
+            (model.minTime! / 60 / 60 / 1000).floor(),
+            ((model.minTime! % (60 * 60 * 1000)) / 60 / 1000).floor(),
+            ((model.minTime! % (60 * 1000)) / 1000).floor(),
+            ((model.minTime! % 1000)).floor());
+      else
+        selectedDateTime = DateTime(
+            selectedDateTime.year,
+            selectedDateTime.month,
+            selectedDateTime.day,
+            (model.minTime! / 60 / 60 / 1000).floor(),
+            ((model.minTime! % (60 * 60 * 1000)) / 60 / 1000).floor(),
+            ((model.minTime! % (60 * 1000)) / 1000).floor(),
+            ((model.minTime! % 1000)).floor());
     }
     if (model.maxTime != null &&
         model.maxTime! <
@@ -58,15 +63,24 @@ class DateTimePickerController {
                 selectedDateTime.second * 1000 +
                 selectedDateTime.minute * 60 * 1000 +
                 selectedDateTime.hour * 60 * 60 * 1000)) {
-      selectedDateTime = DateTime.utc(
-          selectedDateTime.year,
-          selectedDateTime.month,
-          selectedDateTime.day,
-          (model.maxTime! / 60 / 60 / 1000).floor(),
-          ((model.maxTime! % (60 * 60 * 1000)) / 60 / 1000).floor(),
-          ((model.maxTime! % (60 * 1000)) / 1000).floor(),
-          ((model.maxTime! % 1000)).floor());
-      selectedTimestamp = selectedDateTime.millisecondsSinceEpoch;
+      if (model.isUtc)
+        selectedDateTime = DateTime.utc(
+            selectedDateTime.year,
+            selectedDateTime.month,
+            selectedDateTime.day,
+            (model.maxTime! / 60 / 60 / 1000).floor(),
+            ((model.maxTime! % (60 * 60 * 1000)) / 60 / 1000).floor(),
+            ((model.maxTime! % (60 * 1000)) / 1000).floor(),
+            ((model.maxTime! % 1000)).floor());
+      else
+        selectedDateTime = DateTime(
+            selectedDateTime.year,
+            selectedDateTime.month,
+            selectedDateTime.day,
+            (model.maxTime! / 60 / 60 / 1000).floor(),
+            ((model.maxTime! % (60 * 60 * 1000)) / 60 / 1000).floor(),
+            ((model.maxTime! % (60 * 1000)) / 1000).floor(),
+            ((model.maxTime! % 1000)).floor());
     }
     // calculate first day at first page
     this._firstDay = _calculateFirstDayOfWeek(DateTime.utc(1970, 1, 6));
@@ -79,8 +93,7 @@ class DateTimePickerController {
     setPageNbr(currentPage);
     // inform listeners about initial status
     _currentDay = _createDay(selectedDateTime);
-    _selectedInject.add(
-        SelectedTimestamp(selectedDateTime, selectedTimestamp, _currentDay!));
+    _selectedInject.add(SelectedTimestamp(selectedDateTime, _currentDay!));
   }
 
   void dispose() {
@@ -145,12 +158,19 @@ class DateTimePickerController {
 
   Day _createDay(DateTime dt) {
     Day day = Day(date: dt);
-    if (model.maxTimestamp != null &&
-        model.maxTimestamp! < dt.millisecondsSinceEpoch) {
+    if (model.minDateTime != null &&
+        DateTime(model.minDateTime!.year, model.minDateTime!.month,
+                    model.minDateTime!.day)
+                .millisecondsSinceEpoch >
+            dt.millisecondsSinceEpoch) {
       day.enabled = false;
     }
-    if (model.minTimestamp != null &&
-        model.minTimestamp! > dt.millisecondsSinceEpoch) {
+    if (model.maxDateTime != null &&
+        DateTime(model.maxDateTime!.year, model.maxDateTime!.month,
+                    model.maxDateTime!.day)
+                .add(Duration(days: 1))
+                .millisecondsSinceEpoch <
+            dt.millisecondsSinceEpoch) {
       day.enabled = false;
     }
     _createTimeslots(day);
@@ -158,7 +178,9 @@ class DateTimePickerController {
   }
 
   void _createTimeslots(Day day) {
-    DateTime dt = DateTime.utc(day.date.year, day.date.month, day.date.day);
+    DateTime dt = model.isUtc
+        ? DateTime.utc(day.date.year, day.date.month, day.date.day)
+        : DateTime(day.date.year, day.date.month, day.date.day);
     while (dt.day == day.date.day) {
       if ((model.minTime == null ||
               model.minTime! <=
@@ -173,12 +195,16 @@ class DateTimePickerController {
                       dt.minute * 60 * 1000 +
                       dt.hour * 60 * 60 * 1000))) {
         Timeslot timeslot = Timeslot(date: dt);
-        if (model.minTimestamp != null &&
-            model.minTimestamp! > timeslot.date.millisecondsSinceEpoch)
+        if (model.minDateTime != null &&
+            model.minDateTime!.millisecondsSinceEpoch >
+                dt.millisecondsSinceEpoch) {
           timeslot.enabled = false;
-        if (model.maxTimestamp != null &&
-            model.maxTimestamp! < timeslot.date.millisecondsSinceEpoch)
+        }
+        if (model.maxDateTime != null &&
+            model.maxDateTime!.millisecondsSinceEpoch <
+                dt.millisecondsSinceEpoch) {
           timeslot.enabled = false;
+        }
         day.timeslots.add(timeslot);
       }
       dt = dt.add(model.timeInterval);
@@ -228,20 +254,18 @@ class DateTimePickerController {
         selectedDateTime.second,
         selectedDateTime.millisecond,
         selectedDateTime.microsecond);
-    selectedTimestamp = selectedDateTime.millisecondsSinceEpoch;
-    if (model.minTimestamp != null && model.minTimestamp! > selectedTimestamp) {
-      selectedTimestamp = model.minTimestamp!;
-      selectedDateTime =
-          DateTime.fromMillisecondsSinceEpoch(selectedTimestamp, isUtc: true);
+    if (model.minDateTime != null &&
+        model.minDateTime!.millisecondsSinceEpoch >
+            selectedDateTime.millisecondsSinceEpoch) {
+      selectedDateTime = model.minDateTime!;
     }
-    if (model.maxTimestamp != null && model.maxTimestamp! < selectedTimestamp) {
-      selectedTimestamp = model.maxTimestamp!;
-      selectedDateTime =
-          DateTime.fromMillisecondsSinceEpoch(selectedTimestamp, isUtc: true);
+    if (model.maxDateTime != null &&
+        model.maxDateTime!.millisecondsSinceEpoch <
+            selectedDateTime.millisecondsSinceEpoch) {
+      selectedDateTime = model.maxDateTime!;
     }
     _currentDay = _createDay(selectedDateTime);
-    _selectedInject.add(
-        SelectedTimestamp(selectedDateTime, selectedTimestamp, _currentDay!));
+    _selectedInject.add(SelectedTimestamp(selectedDateTime, _currentDay!));
   }
 
   void setTime(DateTime time) {
@@ -254,9 +278,7 @@ class DateTimePickerController {
         time.second,
         time.millisecond,
         time.microsecond);
-    selectedTimestamp = selectedDateTime.millisecondsSinceEpoch;
-    _selectedInject.add(
-        SelectedTimestamp(selectedDateTime, selectedTimestamp, _currentDay!));
+    _selectedInject.add(SelectedTimestamp(selectedDateTime, _currentDay!));
   }
 
   bool isSelectedDay(DateTime day) {
@@ -314,13 +336,11 @@ class DateTimePickerController {
 /////////////////////////////////////////////////////////////////////////////
 
 class SelectedTimestamp {
-  final int timestamp;
-
   final DateTime dateTime;
 
   final Day day;
 
-  const SelectedTimestamp(this.dateTime, this.timestamp, this.day);
+  const SelectedTimestamp(this.dateTime, this.day);
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
         const SizedBox(height: 8),
         DateTimePicker(
           model: DateTimePickerModel(
-            initialTimestamp: dt.millisecondsSinceEpoch,
+            initialDateTime: dt,
             // startDate: dt.subtract(const Duration(days: 1)),
             // endDate: dt.add(const Duration(days: 60)),
             // startTime: DateTime(dt.year, dt.month, dt.day, 6),
@@ -124,15 +124,13 @@ class _MyHomePageState extends State<MyHomePage> {
             // timeOutOfRangeError: 'Sorry shop is closed now',
             // is24h: false,
             numberOfWeeksToDisplay: 4,
-            minTime: 4 * 60 * 60 * 1000,
-            maxTime: 18 * 60 * 60 * 1000,
-            minTimestamp: dt.millisecondsSinceEpoch - 24 * 60 * 60 * 1000,
-            maxTimestamp: dt.millisecondsSinceEpoch + 14 * 24 * 60 * 60 * 1000,
-            onDateTimeChanged: (int timestamp) {
-              _d2 = DateFormat('dd MMM, yyyy').format(
-                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
-              _t2 = DateFormat('hh:mm:ss aa').format(
-                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
+            minTime: const Duration(hours: 4),
+            maxTime: const Duration(hours: 18),
+            minDateTime: dt.subtract(const Duration(hours: 24)),
+            maxDateTime: dt.add(const Duration(days: 14)),
+            onDateTimeChanged: (DateTime dateTime) {
+              _d2 = DateFormat('dd MMM, yyyy').format(dateTime);
+              _t2 = DateFormat('hh:mm:ss aa').format(dateTime);
               print("Date: $_d2 Time: $_t2");
             },
           ),
@@ -153,13 +151,12 @@ class _MyHomePageState extends State<MyHomePage> {
         const SizedBox(height: 8),
         DatePicker(
           model: DateTimePickerModel(
+            initialDateTime: DateTime.now(),
             numberOfWeeksToDisplay: 1,
             firstDayOfWeek: DateTime.monday,
-            onDateTimeChanged: (int timestamp) {
-              _d2 = DateFormat('dd MMM, yyyy').format(
-                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
-              _t2 = DateFormat('hh:mm:ss aa').format(
-                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
+            onDateTimeChanged: (DateTime dateTime) {
+              _d2 = DateFormat('dd MMM, yyyy').format(dateTime);
+              _t2 = DateFormat('hh:mm:ss aa').format(dateTime);
               print("Date: $_d2 Time: $_t2");
             },
           ),
@@ -180,12 +177,11 @@ class _MyHomePageState extends State<MyHomePage> {
         const SizedBox(height: 8),
         TimePicker(
           model: DateTimePickerModel(
+            initialDateTime: DateTime.now(),
             timeInterval: const Duration(minutes: 30),
-            onDateTimeChanged: (int timestamp) {
-              _d2 = DateFormat('dd MMM, yyyy').format(
-                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
-              _t2 = DateFormat('hh:mm:ss aa').format(
-                  DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));
+            onDateTimeChanged: (DateTime dateTime) {
+              _d2 = DateFormat('dd MMM, yyyy').format(dateTime);
+              _t2 = DateFormat('hh:mm:ss aa').format(dateTime);
             },
           ),
         )

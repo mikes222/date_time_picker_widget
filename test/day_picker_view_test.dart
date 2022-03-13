@@ -12,10 +12,10 @@ import 'testhelper.dart';
 void main() {
   testWidgets('Shows the daypicker with sunday as first day of week',
       (WidgetTester tester) async {
-    final int selectedTimestamp =
-        DateTime.utc(2022, 3, 10, 0, 0, 0, 0, 0).millisecondsSinceEpoch;
+    final DateTime selectedDateTime =
+        DateTime.utc(2022, 3, 10, 0, 0, 0, 0, 0);
     final DateTimePickerModel model =
-        DateTimePickerModel(initialTimestamp: selectedTimestamp);
+        DateTimePickerModel(initialDateTime: selectedDateTime);
     final DateTimePickerController controller =
         DateTimePickerController(model: model);
     await tester.pumpWidget(await TestHelper.makeTestableWidget(
@@ -34,10 +34,10 @@ void main() {
 
   testWidgets('Shows the daypicker with monday as first day of week',
       (WidgetTester tester) async {
-    final int selectedTimestamp =
-        DateTime.utc(2022, 3, 10, 0, 0, 0, 0, 0).millisecondsSinceEpoch;
+    final DateTime selectedDateTime =
+        DateTime.utc(2022, 3, 10, 0, 0, 0, 0, 0);
     final DateTimePickerModel model = DateTimePickerModel(
-        initialTimestamp: selectedTimestamp, firstDayOfWeek: DateTime.monday);
+        initialDateTime: selectedDateTime, firstDayOfWeek: DateTime.monday);
     final DateTimePickerController controller =
         DateTimePickerController(model: model);
     await tester.pumpWidget(await TestHelper.makeTestableWidget(

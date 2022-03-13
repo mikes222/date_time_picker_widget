@@ -49,6 +49,7 @@ class TimePickerView extends StatelessWidget {
             height: 45,
             alignment: Alignment.center,
             child: ScrollablePositionedList.builder(
+              initialScrollIndex: idx,
               itemScrollController: _timeScrollController,
               //itemPositionsListener: viewModel.timePositionsListener,
               scrollDirection: Axis.horizontal,
@@ -90,7 +91,7 @@ class TimePickerView extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           // ignore: lines_longer_than_80_chars
-          '${model.viewConverter.timeToView(timeslot.date.millisecondsSinceEpoch)}',
+          '${model.viewConverter.timeToView(timeslot.date)}',
           style: TextStyle(
               fontSize: 14,
               color: controller.isSelectedTime(timeslot.date)

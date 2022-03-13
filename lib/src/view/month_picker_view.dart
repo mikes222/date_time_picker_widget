@@ -23,11 +23,10 @@ class MonthPickerView extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting)
                 return const SizedBox();
               SelectedPage selectedPage = snapshot.data!;
-              int timestamp = selectedPage
+              DateTime dateTime = selectedPage
                   .weeks[(model.numberOfWeeksToDisplay / 2).floor()]
                   .days[3]
-                  .date
-                  .millisecondsSinceEpoch;
+                  .date;
               return Padding(
                 padding: const EdgeInsets.only(right: 8),
                 child: Row(
@@ -48,7 +47,7 @@ class MonthPickerView extends StatelessWidget {
                         ),
                         onPressed: controller.previousMonth),
                     Text(
-                      '${model.viewConverter.monthYearToView(timestamp)}',
+                      '${model.viewConverter.monthYearToView(dateTime)}',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).textTheme.bodyText2?.color,

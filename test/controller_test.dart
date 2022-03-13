@@ -4,10 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('substracts one month from first of march', () {
-    final int selectedTimestamp =
-        DateTime.utc(2022, 3, 1, 0, 0, 0, 0, 0).millisecondsSinceEpoch;
+    final DateTime selectedDateTime = DateTime.utc(2022, 3, 1, 0, 0, 0, 0, 0);
     final DateTimePickerModel model =
-        DateTimePickerModel(initialTimestamp: selectedTimestamp);
+        DateTimePickerModel(initialDateTime: selectedDateTime);
     final DateTimePickerController controller =
         DateTimePickerController(model: model);
     controller.previousMonth();
@@ -18,10 +17,9 @@ void main() {
   });
 
   test('substracts one month from last of march', () {
-    final int selectedTimestamp =
-        DateTime.utc(2022, 3, 31, 0, 0, 0, 0, 0).millisecondsSinceEpoch;
+    final DateTime selectedDateTime = DateTime.utc(2022, 3, 31, 0, 0, 0, 0, 0);
     final DateTimePickerModel model =
-        DateTimePickerModel(initialTimestamp: selectedTimestamp);
+        DateTimePickerModel(initialDateTime: selectedDateTime);
     final DateTimePickerController controller =
         DateTimePickerController(model: model);
     controller.previousMonth();
@@ -32,10 +30,9 @@ void main() {
   });
 
   test('substracts one month from last of january', () {
-    final int selectedTimestamp =
-        DateTime.utc(2022, 1, 31, 0, 0, 0, 0, 0).millisecondsSinceEpoch;
+    final DateTime selectedDateTime = DateTime.utc(2022, 1, 31, 0, 0, 0, 0, 0);
     final DateTimePickerModel model =
-        DateTimePickerModel(initialTimestamp: selectedTimestamp);
+        DateTimePickerModel(initialDateTime: selectedDateTime);
     final DateTimePickerController controller =
         DateTimePickerController(model: model);
     controller.previousMonth();
@@ -46,10 +43,9 @@ void main() {
   });
 
   test('adds one month from last of january', () {
-    final int selectedTimestamp =
-        DateTime.utc(2022, 1, 31, 0, 0, 0, 0, 0).millisecondsSinceEpoch;
+    final DateTime selectedDateTime = DateTime.utc(2022, 1, 31, 0, 0, 0, 0, 0);
     final DateTimePickerModel model =
-        DateTimePickerModel(initialTimestamp: selectedTimestamp);
+        DateTimePickerModel(initialDateTime: selectedDateTime);
     final DateTimePickerController controller =
         DateTimePickerController(model: model);
     controller.nextMonth();

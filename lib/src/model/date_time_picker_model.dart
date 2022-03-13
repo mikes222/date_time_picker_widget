@@ -2,22 +2,22 @@ import 'package:date_time_picker_widget/src/date_time_picker_view_converter.dart
 
 class DateTimePickerModel {
   /// The initial timestamp to show when opening that widget
-  late final int initialTimestamp;
+  late final DateTime initialDateTime;
 
   /// The minimum timestamp which can be chosen by the user
-  late final int? minTimestamp;
+  late final DateTime? minDateTime;
 
   /// The maximum timestamp which can be chosen by the user
-  late final int? maxTimestamp;
+  late final DateTime? maxDateTime;
 
   /// The interval in milliseconds between the elements. Minimum is 1 minute (=60*1000 milliseconds)
-  Duration timeInterval;
+  late final Duration timeInterval;
 
   final int numberOfWeeksToDisplay;
 
   final int firstDayOfWeek;
 
-  final Function(int timestamp)? onDateTimeChanged;
+  final Function(DateTime dateTime)? onDateTimeChanged;
 
   late final DateTimePickerViewConverter viewConverter;
 
@@ -27,39 +27,57 @@ class DateTimePickerModel {
   /// if set all time entries largen than the given time in milliseconds will not be shown
   late final int? maxTime;
 
+  late final bool isUtc;
+
   DateTimePickerModel({
-    int? initialTimestamp,
-    int? minTimestamp,
-    int? maxTimestamp,
+    required DateTime initialDateTime,
+    // The minimum date/time which can be picked by the user. See also
+    // [maxDateTime]
+    DateTime? minDateTime,
+
+    /// The maximum date/time which can be picked by the user. Take care of
+    /// Winter/Summer-time-changes. For example during winter time if you add
+    /// a few days to calculate the maxtime and the calculated maxtime is in
+    /// the summertime the DateTime class automatically adds one hour to the
+    /// enddate.
+    DateTime? maxDateTime,
     this.firstDayOfWeek = DateTime.sunday,
     this.timeInterval = const Duration(minutes: 1),
     this.onDateTimeChanged,
     DateTimePickerViewConverter? viewConverter,
     this.numberOfWeeksToDisplay = 4,
-    int? minTime,
-    int? maxTime,
+
+    /// The timepicker will not show times before the minTime. This can be used
+    /// to reflect office hours
+    Duration? minTime,
+
+    /// The timepicker will not show times after the maxTime. This can be used
+    /// to reflect office hours
+    Duration? maxTime,
   })  : assert(timeInterval.inMinutes >= 1),
         assert(timeInterval.inMilliseconds % (60 * 1000) == 0),
         assert(firstDayOfWeek == DateTime.sunday ||
             firstDayOfWeek == DateTime.monday),
-        assert(minTime == null || minTime > 0),
-        assert(
-            maxTime == null || (maxTime > 0 && maxTime < 24 * 60 * 60 * 1000)),
+        assert(minTime == null || minTime.inMilliseconds > 0),
+        assert(maxTime == null ||
+            (maxTime.inMilliseconds > 0 && maxTime.inHours < 24)),
         assert(minTime == null || maxTime == null || minTime < maxTime),
-        assert(initialTimestamp == null ||
-            minTimestamp == null ||
-            minTimestamp <= initialTimestamp),
-        assert(initialTimestamp == null ||
-            maxTimestamp == null ||
-            maxTimestamp >= initialTimestamp) {
-    this.initialTimestamp = _calculateInitialTimestamp(initialTimestamp);
-    this.minTimestamp =
-        minTimestamp == null ? null : _roundTimestamp(minTimestamp);
-    this.maxTimestamp =
-        maxTimestamp == null ? null : _roundTimestamp(maxTimestamp);
+        assert(minDateTime == null ||
+            minDateTime.millisecondsSinceEpoch <=
+                initialDateTime.millisecondsSinceEpoch),
+        assert(maxDateTime == null ||
+            maxDateTime.millisecondsSinceEpoch >=
+                initialDateTime.millisecondsSinceEpoch),
+        assert(numberOfWeeksToDisplay > 0) {
+    isUtc = initialDateTime.isUtc;
+    this.initialDateTime = _roundDateTime(initialDateTime);
+    this.minDateTime = minDateTime == null ? null : _roundDateTime(minDateTime);
+    this.maxDateTime = maxDateTime == null ? null : _roundDateTime(maxDateTime);
     this.viewConverter = viewConverter ?? DateTimePickerViewConverter();
-    this.minTime = minTime == null ? null : _roundTimestamp(minTime);
-    this.maxTime = maxTime == null ? null : _roundTimestamp(maxTime);
+    this.minTime =
+        minTime == null ? null : _roundTimestamp(minTime.inMilliseconds);
+    this.maxTime =
+        maxTime == null ? null : _roundTimestamp(maxTime.inMilliseconds);
   }
 
   int _roundTimestamp(int timestamp) {
@@ -67,8 +85,24 @@ class DateTimePickerModel {
         timeInterval.inMilliseconds;
   }
 
-  int _calculateInitialTimestamp(int? timestamp) {
-    int result = timestamp ?? DateTime.now().millisecondsSinceEpoch;
-    return _roundTimestamp(result);
+  DateTime _roundDateTime(DateTime dateTime) {
+    Duration d = Duration(hours: dateTime.hour, minutes: dateTime.minute);
+    int milliseconds =
+        (d.inMilliseconds / timeInterval.inMilliseconds).round() *
+            timeInterval.inMilliseconds;
+    if (isUtc)
+      return DateTime.utc(
+          dateTime.year,
+          dateTime.month,
+          dateTime.day,
+          (milliseconds / 60 / 60 / 1000).floor(),
+          ((milliseconds / 60 / 1000).floor() % 60));
+    else
+      return DateTime(
+          dateTime.year,
+          dateTime.month,
+          dateTime.day,
+          (milliseconds / 60 / 60 / 1000).floor(),
+          ((milliseconds / 60 / 1000).floor() % 60));
   }
 }

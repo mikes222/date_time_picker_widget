@@ -10,10 +10,10 @@ import 'testhelper.dart';
 ///
 void main() {
   testWidgets('adds one to input values', (WidgetTester tester) async {
-    final int selectedTimestamp =
-        DateTime.utc(2022, 3, 1, 0, 0, 0, 0, 0).millisecondsSinceEpoch;
+    final DateTime selectedDateTime =
+        DateTime.utc(2022, 3, 1, 0, 0, 0, 0, 0);
     final DateTimePickerModel model =
-        DateTimePickerModel(initialTimestamp: selectedTimestamp);
+        DateTimePickerModel(initialDateTime: selectedDateTime);
     final DateTimePickerController controller =
         DateTimePickerController(model: model);
     await tester.pumpWidget(await TestHelper.makeTestableWidget(
