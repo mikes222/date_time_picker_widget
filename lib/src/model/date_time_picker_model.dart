@@ -1,5 +1,6 @@
 import 'package:date_time_picker_widget/src/date_time_picker_view_converter.dart';
 
+/// The model holds all parameters on how to behave with datepicker
 class DateTimePickerModel {
   /// The initial timestamp to show when opening that widget
   late final DateTime initialDateTime;
