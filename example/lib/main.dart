@@ -118,8 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // endDate: dt.add(const Duration(days: 60)),
             // startTime: DateTime(dt.year, dt.month, dt.day, 6),
             // endTime: DateTime(dt.year, dt.month, dt.day, 18),
-            timeInterval: 15 * 60 * 1000,
-            //const Duration(minutes: 15),
+            timeInterval: const Duration(minutes: 15),
             // datePickerTitle: 'Pick your preferred date',
             // timePickerTitle: 'Pick your preferred time',
             // timeOutOfRangeError: 'Sorry shop is closed now',
@@ -181,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
         const SizedBox(height: 8),
         TimePicker(
           model: DateTimePickerModel(
-            timeInterval: 30 * 60 * 1000,
+            timeInterval: const Duration(minutes: 30),
             onDateTimeChanged: (int timestamp) {
               _d2 = DateFormat('dd MMM, yyyy').format(
                   DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true));

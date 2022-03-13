@@ -6,6 +6,8 @@ import 'package:date_time_picker_widget/src/model/timeslot.dart';
 import 'package:date_time_picker_widget/src/model/week.dart';
 import 'package:rxdart/rxdart.dart';
 
+/// The controller controls all changes. It informs the views if any change
+/// occurs and verifies that the changes do not validate the constraints.
 class DateTimePickerController {
   final DateTimePickerModel model;
 
@@ -179,7 +181,7 @@ class DateTimePickerController {
           timeslot.enabled = false;
         day.timeslots.add(timeslot);
       }
-      dt = dt.add(Duration(milliseconds: model.timeInterval));
+      dt = dt.add(model.timeInterval);
     }
   }
 

@@ -14,7 +14,8 @@ void main() {
     final int selectedTimestamp =
         DateTime.utc(2022, 3, 10, 1, 30, 0, 0, 0).millisecondsSinceEpoch;
     final DateTimePickerModel model = DateTimePickerModel(
-        initialTimestamp: selectedTimestamp, timeInterval: 15 * 60 * 1000);
+        initialTimestamp: selectedTimestamp,
+        timeInterval: const Duration(minutes: 15));
     final DateTimePickerController controller =
         DateTimePickerController(model: model);
     await tester.pumpWidget(await TestHelper.makeTestableWidget(

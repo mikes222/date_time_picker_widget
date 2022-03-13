@@ -11,7 +11,7 @@ class DateTimePickerModel {
   late final int? maxTimestamp;
 
   /// The interval in milliseconds between the elements. Minimum is 1 minute (=60*1000 milliseconds)
-  int timeInterval;
+  Duration timeInterval;
 
   final int numberOfWeeksToDisplay;
 
@@ -32,14 +32,14 @@ class DateTimePickerModel {
     int? minTimestamp,
     int? maxTimestamp,
     this.firstDayOfWeek = DateTime.sunday,
-    this.timeInterval = 60 * 1000,
+    this.timeInterval = const Duration(minutes: 1),
     this.onDateTimeChanged,
     DateTimePickerViewConverter? viewConverter,
     this.numberOfWeeksToDisplay = 4,
     int? minTime,
     int? maxTime,
-  })  : assert(timeInterval >= 60 * 1000),
-        assert(timeInterval % (60 * 1000) == 0),
+  })  : assert(timeInterval.inMinutes >= 1),
+        assert(timeInterval.inMilliseconds % (60 * 1000) == 0),
         assert(firstDayOfWeek == DateTime.sunday ||
             firstDayOfWeek == DateTime.monday),
         assert(minTime == null || minTime > 0),
@@ -63,7 +63,8 @@ class DateTimePickerModel {
   }
 
   int _roundTimestamp(int timestamp) {
-    return (timestamp / timeInterval).round() * timeInterval;
+    return (timestamp / timeInterval.inMilliseconds).round() *
+        timeInterval.inMilliseconds;
   }
 
   int _calculateInitialTimestamp(int? timestamp) {
