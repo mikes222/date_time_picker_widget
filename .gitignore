@@ -75,3 +75,5 @@ build/
 *.lock
 /example/pubspec.lock
 /pubspec.lock
+
+test/failures

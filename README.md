@@ -4,6 +4,17 @@
 
 This package brings us a way to pick date and time with fresh new UI design
 
+This is a refactoring of the original date time picker widget
+
+## New features compared to the original widget 
+
+ - minTime, maxTime to show only business hours
+ - Support for UTC as well as local time
+ - callback [onDayCreated] to individually enable/disable days or timeslots
+ - configurable number of lines for the daypicker
+ - possibility to move forward/back a month/year
+ - first day of week can be either sunday or monday
+
 ## Usage
 
 In the `pubspec.yaml` of your flutter project, add the following dependency:

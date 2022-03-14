@@ -168,12 +168,13 @@ class DateTimePickerController {
     if (model.maxDateTime != null &&
         DateTime(model.maxDateTime!.year, model.maxDateTime!.month,
                     model.maxDateTime!.day)
-                .add(Duration(days: 1))
+                .add(const Duration(days: 1))
                 .millisecondsSinceEpoch <
             dt.millisecondsSinceEpoch) {
       day.enabled = false;
     }
     _createTimeslots(day);
+    if (model.onDayCreated != null) model.onDayCreated!(day);
     return day;
   }
 

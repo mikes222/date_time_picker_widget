@@ -1,6 +1,17 @@
 import 'package:intl/intl.dart';
 
 class DateTimePickerViewConverter {
+  final String pickADateText;
+
+  final String pickATimeText;
+
+  final bool is24h;
+
+  DateTimePickerViewConverter(
+      {this.pickADateText = "Pick a date",
+      this.pickATimeText = "Pick a time",
+      this.is24h = false});
+
   final Map<int, String> weekdays = {
     DateTime.sunday: 'S',
     DateTime.monday: 'M',
@@ -20,16 +31,14 @@ class DateTimePickerViewConverter {
   }
 
   String timeToView(DateTime dateTime) {
-    return DateFormat('HH:mm' /*: 'hh:mm aa'*/).format(dateTime);
+    return DateFormat(is24h ? 'HH:mm' : 'hh:mm aa').format(dateTime);
   }
 
-  String pickADateText() {
-    return "Pick a Date";
+  String getPickADateText() {
+    return pickADateText;
   }
 
-  String pickATimeText() {
-    return "Pick a Time";
+  String getPickATimeText() {
+    return pickATimeText;
   }
-
-  DateTimePickerViewConverter();
 }

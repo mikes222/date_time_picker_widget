@@ -1,4 +1,5 @@
 import 'package:date_time_picker_widget/src/date_time_picker_view_converter.dart';
+import 'package:date_time_picker_widget/src/model/day.dart';
 
 /// The model holds all parameters on how to behave with datepicker
 class DateTimePickerModel {
@@ -19,6 +20,9 @@ class DateTimePickerModel {
   final int firstDayOfWeek;
 
   final Function(DateTime dateTime)? onDateTimeChanged;
+
+  /// Use this function to manipulate a day or timeslots and enable/disable them individually
+  final Function(Day day)? onDayCreated;
 
   late final DateTimePickerViewConverter viewConverter;
 
@@ -55,6 +59,7 @@ class DateTimePickerModel {
     /// The timepicker will not show times after the maxTime. This can be used
     /// to reflect office hours
     Duration? maxTime,
+    this.onDayCreated,
   })  : assert(timeInterval.inMinutes >= 1),
         assert(timeInterval.inMilliseconds % (60 * 1000) == 0),
         assert(firstDayOfWeek == DateTime.sunday ||
@@ -63,12 +68,13 @@ class DateTimePickerModel {
         assert(maxTime == null ||
             (maxTime.inMilliseconds > 0 && maxTime.inHours < 24)),
         assert(minTime == null || maxTime == null || minTime < maxTime),
-        assert(minDateTime == null ||
-            minDateTime.millisecondsSinceEpoch <=
-                initialDateTime.millisecondsSinceEpoch),
-        assert(maxDateTime == null ||
-            maxDateTime.millisecondsSinceEpoch >=
-                initialDateTime.millisecondsSinceEpoch),
+        // allow time exceeds the boundaries when starting up (but do not allow to pick a time outside the boundaries)
+        // assert(minDateTime == null ||
+        //     minDateTime.millisecondsSinceEpoch <=
+        //         initialDateTime.millisecondsSinceEpoch),
+        // assert(maxDateTime == null ||
+        //     maxDateTime.millisecondsSinceEpoch >=
+        //         initialDateTime.millisecondsSinceEpoch),
         assert(numberOfWeeksToDisplay > 0) {
     isUtc = initialDateTime.isUtc;
     this.initialDateTime = _roundDateTime(initialDateTime);

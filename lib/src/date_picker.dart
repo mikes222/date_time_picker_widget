@@ -49,7 +49,7 @@ class _DatePickerState extends State {
               Padding(
                 padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
                 child: Text(
-                  widget.model.viewConverter.pickADateText(),
+                  widget.model.viewConverter.getPickADateText(),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: const TextStyle(
