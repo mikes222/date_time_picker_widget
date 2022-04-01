@@ -43,6 +43,16 @@ class _TimePickerState extends State {
           DateTimeView(model: widget.model, controller: _controller),
           const SizedBox(height: 16),
           TimePickerView(model: widget.model, controller: _controller),
+          StreamBuilder<SelectedTimestamp>(
+              stream: _controller.selectedTimestampObserve,
+              builder: (context, AsyncSnapshot<SelectedTimestamp> snapshot) {
+                if (snapshot.data == null) return const SizedBox();
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return const SizedBox();
+                if (widget.model.onDateTimeChanged != null)
+                  widget.model.onDateTimeChanged!(snapshot.data!.dateTime);
+                return const SizedBox();
+              }),
         ],
       );
     });

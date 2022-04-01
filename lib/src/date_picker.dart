@@ -64,6 +64,16 @@ class _DatePickerState extends State {
           ),
           WeekdayView(model: widget.model, controller: _controller),
           DayPickerView(model: widget.model, controller: _controller),
+          StreamBuilder<SelectedTimestamp>(
+              stream: _controller.selectedTimestampObserve,
+              builder: (context, AsyncSnapshot<SelectedTimestamp> snapshot) {
+                if (snapshot.data == null) return const SizedBox();
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return const SizedBox();
+                if (widget.model.onDateTimeChanged != null)
+                  widget.model.onDateTimeChanged!(snapshot.data!.dateTime);
+                return const SizedBox();
+              }),
         ],
       );
     });
