@@ -246,15 +246,26 @@ class DateTimePickerController {
   }
 
   void setDay(DateTime day) {
-    selectedDateTime = DateTime.utc(
-        day.year,
-        day.month,
-        day.day,
-        selectedDateTime.hour,
-        selectedDateTime.minute,
-        selectedDateTime.second,
-        selectedDateTime.millisecond,
-        selectedDateTime.microsecond);
+    if (model.isUtc)
+      selectedDateTime = DateTime.utc(
+          day.year,
+          day.month,
+          day.day,
+          selectedDateTime.hour,
+          selectedDateTime.minute,
+          selectedDateTime.second,
+          selectedDateTime.millisecond,
+          selectedDateTime.microsecond);
+    else
+      selectedDateTime = DateTime(
+          day.year,
+          day.month,
+          day.day,
+          selectedDateTime.hour,
+          selectedDateTime.minute,
+          selectedDateTime.second,
+          selectedDateTime.millisecond,
+          selectedDateTime.microsecond);
     if (model.minDateTime != null &&
         model.minDateTime!.millisecondsSinceEpoch >
             selectedDateTime.millisecondsSinceEpoch) {
@@ -270,15 +281,26 @@ class DateTimePickerController {
   }
 
   void setTime(DateTime time) {
-    selectedDateTime = DateTime.utc(
-        selectedDateTime.year,
-        selectedDateTime.month,
-        selectedDateTime.day,
-        time.hour,
-        time.minute,
-        time.second,
-        time.millisecond,
-        time.microsecond);
+    if (model.isUtc)
+      selectedDateTime = DateTime.utc(
+          selectedDateTime.year,
+          selectedDateTime.month,
+          selectedDateTime.day,
+          time.hour,
+          time.minute,
+          time.second,
+          time.millisecond,
+          time.microsecond);
+    else
+      selectedDateTime = DateTime(
+          selectedDateTime.year,
+          selectedDateTime.month,
+          selectedDateTime.day,
+          time.hour,
+          time.minute,
+          time.second,
+          time.millisecond,
+          time.microsecond);
     _selectedInject.add(SelectedTimestamp(selectedDateTime, _currentDay!));
   }
 
