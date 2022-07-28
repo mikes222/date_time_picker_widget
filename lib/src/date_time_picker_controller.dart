@@ -157,7 +157,7 @@ class DateTimePickerController {
   }
 
   Day _createDay(DateTime dt) {
-    Day day = Day(date: dt);
+    final Day day = Day(date: dt);
     if (model.minDateTime != null &&
         DateTime(model.minDateTime!.year, model.minDateTime!.month,
                     model.minDateTime!.day)

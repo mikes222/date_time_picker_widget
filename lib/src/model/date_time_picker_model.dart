@@ -35,6 +35,7 @@ class DateTimePickerModel {
   late final bool isUtc;
 
   DateTimePickerModel({
+    /// The initial datetime. Depending on this field the isUTC will be set to true or false
     required DateTime initialDateTime,
     // The minimum date/time which can be picked by the user. See also
     // [maxDateTime]
@@ -77,39 +78,64 @@ class DateTimePickerModel {
         //         initialDateTime.millisecondsSinceEpoch),
         assert(numberOfWeeksToDisplay > 0) {
     isUtc = initialDateTime.isUtc;
-    this.initialDateTime = _roundDateTime(initialDateTime);
-    this.minDateTime = minDateTime == null ? null : _roundDateTime(minDateTime);
-    this.maxDateTime = maxDateTime == null ? null : _roundDateTime(maxDateTime);
+    this.minDateTime = minDateTime == null ? null : roundDateTime(minDateTime);
+    this.maxDateTime = maxDateTime == null ? null : roundDateTime(maxDateTime);
     this.viewConverter = viewConverter ?? DateTimePickerViewConverter();
     this.minTime =
-        minTime == null ? null : _roundTimestamp(minTime.inMilliseconds);
+        minTime == null ? null : roundTimestamp(minTime.inMilliseconds);
     this.maxTime =
-        maxTime == null ? null : _roundTimestamp(maxTime.inMilliseconds);
+        maxTime == null ? null : roundTimestamp(maxTime.inMilliseconds);
+    this.initialDateTime = roundMinMaxDateTime(initialDateTime);
   }
 
-  int _roundTimestamp(int timestamp) {
+  int roundTimestamp(int timestamp) {
     return (timestamp / timeInterval.inMilliseconds).round() *
         timeInterval.inMilliseconds;
   }
 
-  DateTime _roundDateTime(DateTime dateTime) {
+  /// rounds the given time according to the settings and make sure it is in
+  /// the given boundary of [minDateTime] and [maxDateTime]
+  int roundMinMaxTimestamp(int timestamp) {
+    int result = roundTimestamp(timestamp);
+    if (minDateTime != null && result < minDateTime!.millisecondsSinceEpoch) {
+      result = minDateTime!.millisecondsSinceEpoch;
+    }
+    if (maxDateTime != null && result > maxDateTime!.millisecondsSinceEpoch) {
+      result = maxDateTime!.millisecondsSinceEpoch;
+    }
+    return result;
+  }
+
+  DateTime roundDateTime(DateTime dateTime) {
     Duration d = Duration(hours: dateTime.hour, minutes: dateTime.minute);
-    int milliseconds =
+    final int milliseconds =
         (d.inMilliseconds / timeInterval.inMilliseconds).round() *
             timeInterval.inMilliseconds;
-    if (isUtc)
+    if (isUtc) {
       return DateTime.utc(
           dateTime.year,
           dateTime.month,
           dateTime.day,
           (milliseconds / 60 / 60 / 1000).floor(),
           ((milliseconds / 60 / 1000).floor() % 60));
-    else
+    } else {
       return DateTime(
           dateTime.year,
           dateTime.month,
           dateTime.day,
           (milliseconds / 60 / 60 / 1000).floor(),
           ((milliseconds / 60 / 1000).floor() % 60));
+    }
+  }
+
+  DateTime roundMinMaxDateTime(DateTime dateTime) {
+    DateTime result = roundDateTime(dateTime);
+    if (minDateTime != null && minDateTime!.isAfter(result)) {
+      result = minDateTime!;
+    }
+    if (maxDateTime != null && maxDateTime!.isBefore(result)) {
+      result = maxDateTime!;
+    }
+    return result;
   }
 }

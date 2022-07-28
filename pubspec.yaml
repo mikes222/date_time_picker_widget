@@ -11,10 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.17.0
-  stacked: ^2.2.8
+  stacked: ^2.3.15
   jiffy: ^5.0.0
-  scrollable_positioned_list: ^0.2.3
-  rxdart: ^0.27.3
+  scrollable_positioned_list: ^0.3.2
+  rxdart: ^0.27.5
   golden_toolkit: ^0.13.0
 
 
