@@ -2,12 +2,12 @@ import 'package:date_time_picker_widget/date_time_picker_widget.dart';
 import 'package:date_time_picker_widget/src/date_time_picker_controller.dart';
 import 'package:flutter/material.dart';
 
-class DateTimeView extends StatelessWidget {
+class TimeView extends StatelessWidget {
   final DateTimePickerModel model;
 
   final DateTimePickerController controller;
 
-  const DateTimeView({required this.model, required this.controller});
+  const TimeView({required this.model, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +23,6 @@ class DateTimeView extends StatelessWidget {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                model.viewConverter.dateToView(selectedTimestamp.dateTime),
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
-              const SizedBox(width: 16),
               Text(
                 model.viewConverter.timeToView(selectedTimestamp.dateTime),
                 textAlign: TextAlign.center,

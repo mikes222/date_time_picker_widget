@@ -1,13 +1,13 @@
 import 'package:date_time_picker_widget/src/date_time_picker_controller.dart';
 import 'package:date_time_picker_widget/src/model/date_time_picker_model.dart';
-import 'package:date_time_picker_widget/src/view/date_time_view.dart';
+import 'package:date_time_picker_widget/src/view/time_view.dart';
 import 'package:date_time_picker_widget/src/view/time_picker_view.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimePicker extends StatefulWidget {
   final DateTimePickerModel model;
 
-  TimePicker({required this.model});
+  const TimePicker({required this.model});
 
   @override
   State<StatefulWidget> createState() {
@@ -40,7 +40,7 @@ class _TimePickerState extends State {
     return LayoutBuilder(builder: (context, constraints) {
       return Column(
         children: [
-          DateTimeView(model: widget.model, controller: _controller),
+          TimeView(model: widget.model, controller: _controller),
           const SizedBox(height: 16),
           TimePickerView(model: widget.model, controller: _controller),
           StreamBuilder<SelectedTimestamp>(
