@@ -5,15 +5,15 @@ homepage: https://github.com/mikes222/date_time_picker_widget
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
-  flutter: ">=1.17.0 <2.0.0"
+  #flutter: ">=1.17.0 <2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.17.0
-  stacked: ^3.0.1
-  jiffy: ^5.0.0
-  scrollable_positioned_list: ^0.3.5
+  intl: ^0.18.0
+  stacked: ^3.4.0
+  jiffy: ^6.2.1
+  scrollable_positioned_list: ^0.3.8
   rxdart: ^0.27.7
   golden_toolkit: ^0.15.0
 

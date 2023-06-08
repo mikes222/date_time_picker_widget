@@ -79,12 +79,12 @@ class TimePickerView extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: controller.isSelectedTime(timeslot.date)
-                ? Theme.of(context).accentColor
+                ? Theme.of(context).primaryColor
                 : Colors.grey,
           ),
           color: timeslot.enabled
               ? controller.isSelectedTime(timeslot.date)
-                  ? Theme.of(context).accentColor
+                  ? Theme.of(context).primaryColor
                   : Colors.white
               : Colors.grey.shade300,
         ),

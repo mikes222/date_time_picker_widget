@@ -86,12 +86,12 @@ class DayPickerView extends StatelessWidget {
             borderRadius: BorderRadius.circular(90),
             border: Border.all(
               color: controller.isSelectedDay(day.date)
-                  ? Theme.of(context).accentColor
+                  ? Theme.of(context).primaryColor
                   : Colors.grey,
             ),
             color: day.enabled
                 ? controller.isSelectedDay(day.date)
-                    ? Theme.of(context).accentColor
+                    ? Theme.of(context).primaryColor
                     : Colors.white
                 : Colors.grey.shade300,
           ),
