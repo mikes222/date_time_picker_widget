@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primaryColor: Colors.blue,
-        accentColor: Colors.blue,
+        //accentColor: Colors.blue,
       ),
       home: const MyHomePage(title: 'Date Time Picker Demo'),
     );
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({required this.title}) : super();
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -50,15 +50,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Color _color = Colors.blue;
-  String _d1, _d2;
-  String _t1, _t2;
+  late String _d2;
+  late String _t2;
 
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
         primaryColor: _color,
-        accentColor: _color,
+        //accentColor: _color,
       ),
       child: Scaffold(
         appBar: AppBar(
