@@ -26,7 +26,7 @@ class TimeView extends StatelessWidget {
               Text(
                 model.viewConverter.timeToView(selectedTimestamp.dateTime),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           );

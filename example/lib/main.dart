@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     'Color Pallet',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 24),
                   _colorPallet(),
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Text(
           'Date & Time Picker',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 8),
         DateTimePicker(
@@ -146,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Text(
           'Date Picker',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 8),
         DatePicker(
@@ -172,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Text(
           'Time Picker',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 8),
         TimePicker(

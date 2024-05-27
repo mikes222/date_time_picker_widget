@@ -26,13 +26,13 @@ class DateTimeView extends StatelessWidget {
               Text(
                 model.viewConverter.dateToView(selectedTimestamp.dateTime),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(width: 16),
               Text(
                 model.viewConverter.timeToView(selectedTimestamp.dateTime),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           );

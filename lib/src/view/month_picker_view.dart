@@ -37,20 +37,20 @@ class MonthPickerView extends StatelessWidget {
                     IconButton(
                         icon: Icon(
                           Icons.keyboard_double_arrow_left_outlined,
-                          color: Theme.of(context).textTheme.bodyText2?.color,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                         onPressed: controller.previousYear),
                     IconButton(
                         icon: Icon(
                           Icons.navigate_before,
-                          color: Theme.of(context).textTheme.bodyText2?.color,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                         onPressed: controller.previousMonth),
                     Text(
                       '${model.viewConverter.monthYearToView(dateTime)}',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Theme.of(context).textTheme.bodyText2?.color,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                         fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.center,
@@ -58,13 +58,13 @@ class MonthPickerView extends StatelessWidget {
                     IconButton(
                         icon: Icon(
                           Icons.navigate_next,
-                          color: Theme.of(context).textTheme.bodyText2?.color,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                         onPressed: controller.nextMonth),
                     IconButton(
                         icon: Icon(
                           Icons.keyboard_double_arrow_right_outlined,
-                          color: Theme.of(context).textTheme.bodyText2?.color,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                         onPressed: controller.nextYear),
                   ],
