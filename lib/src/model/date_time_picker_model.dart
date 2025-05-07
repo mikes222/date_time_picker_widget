@@ -63,11 +63,9 @@ class DateTimePickerModel {
     this.onDayCreated,
   })  : assert(timeInterval.inMinutes >= 1),
         assert(timeInterval.inMilliseconds % (60 * 1000) == 0),
-        assert(firstDayOfWeek == DateTime.sunday ||
-            firstDayOfWeek == DateTime.monday),
+        assert(firstDayOfWeek == DateTime.sunday || firstDayOfWeek == DateTime.monday),
         assert(minTime == null || minTime.inMilliseconds > 0),
-        assert(maxTime == null ||
-            (maxTime.inMilliseconds > 0 && maxTime.inHours < 24)),
+        assert(maxTime == null || (maxTime.inMilliseconds > 0 && maxTime.inHours < 24)),
         assert(minTime == null || maxTime == null || minTime < maxTime),
         // allow time exceeds the boundaries when starting up (but do not allow to pick a time outside the boundaries)
         // assert(minDateTime == null ||
@@ -81,16 +79,14 @@ class DateTimePickerModel {
     this.minDateTime = minDateTime == null ? null : roundDateTime(minDateTime);
     this.maxDateTime = maxDateTime == null ? null : roundDateTime(maxDateTime);
     this.viewConverter = viewConverter ?? DateTimePickerViewConverter();
-    this.minTime =
-        minTime == null ? null : roundTimestamp(minTime.inMilliseconds);
-    this.maxTime =
-        maxTime == null ? null : roundTimestamp(maxTime.inMilliseconds);
+    this.minTime = minTime == null ? null : roundTimestamp(minTime.inMilliseconds);
+    this.maxTime = maxTime == null ? null : roundTimestamp(maxTime.inMilliseconds);
     this.initialDateTime = roundMinMaxDateTime(initialDateTime);
   }
 
   int roundTimestamp(int timestamp) {
-    return (timestamp / timeInterval.inMilliseconds).round() *
-        timeInterval.inMilliseconds;
+    // use floor to round down. So that 14:47 and 53 seconds will be rounded to 14:47 and not 14:48 which would be confusing
+    return (timestamp / timeInterval.inMilliseconds).floor() * timeInterval.inMilliseconds;
   }
 
   /// rounds the given time according to the settings and make sure it is in
@@ -106,28 +102,20 @@ class DateTimePickerModel {
     return result;
   }
 
+  /// rounds the given time according to the settings, especially the timeInterval
   DateTime roundDateTime(DateTime dateTime) {
-    Duration d = Duration(hours: dateTime.hour, minutes: dateTime.minute);
-    final int milliseconds =
-        (d.inMilliseconds / timeInterval.inMilliseconds).round() *
-            timeInterval.inMilliseconds;
+    final Duration d = Duration(hours: dateTime.hour, minutes: dateTime.minute);
+    // use floor to round down. So that 14:47 and 53 seconds will be rounded to 14:47 and not 14:48 which would be confusing
+    final int milliseconds = (d.inMilliseconds / timeInterval.inMilliseconds).floor() * timeInterval.inMilliseconds;
     if (isUtc) {
-      return DateTime.utc(
-          dateTime.year,
-          dateTime.month,
-          dateTime.day,
-          (milliseconds / 60 / 60 / 1000).floor(),
-          ((milliseconds / 60 / 1000).floor() % 60));
+      return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, (milliseconds / 60 / 60 / 1000).floor(), (milliseconds / 60 / 1000).floor() % 60);
     } else {
-      return DateTime(
-          dateTime.year,
-          dateTime.month,
-          dateTime.day,
-          (milliseconds / 60 / 60 / 1000).floor(),
-          ((milliseconds / 60 / 1000).floor() % 60));
+      return DateTime(dateTime.year, dateTime.month, dateTime.day, (milliseconds / 60 / 60 / 1000).floor(), (milliseconds / 60 / 1000).floor() % 60);
     }
   }
 
+  /// rounds the given time according to the settings and make sure it is in
+  /// the given boundary of [minDateTime] and [maxDateTime]
   DateTime roundMinMaxDateTime(DateTime dateTime) {
     DateTime result = roundDateTime(dateTime);
     if (minDateTime != null && minDateTime!.isAfter(result)) {
